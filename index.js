@@ -6,6 +6,8 @@ server.listen(8080);
 
 const routes = {
   '/': 'index.html',
+  '/about': 'about.html',
+  '/contact-me': 'contact-me.html',
   '/style.css': 'style.css',
 };
 
