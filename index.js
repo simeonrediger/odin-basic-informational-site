@@ -6,10 +6,12 @@ server.listen(8080);
 
 const routes = {
   '/': 'index.html',
+  '/style.css': 'style.css',
 };
 
 const contentTypes = {
   html: 'text/html',
+  css: 'text/css',
 };
 
 function route(request, response) {
