@@ -32,20 +32,16 @@ export default async function route(request, response) {
     response.writeHead(200, { 'Content-Type': contentType });
     response.end(data);
   } catch (error) {
-    let is404Page = extension === '.html';
-    let notFoundPage;
-
-    if (is404Page) {
+    if (extension === '.html') {
       try {
-        notFoundPage = await fs.readFile('404.html', 'utf8');
+        const notFoundPage = await fs.readFile('404.html', 'utf8');
+        response.writeHead(404, { 'Content-Type': 'text/html' });
+        response.end(notFoundPage);
+        return;
       } catch (error) {}
     }
 
-    response.writeHead(404, {
-      'Content-Type': is404Page ? 'text/html' : 'text/plain',
-    });
-
-    response.end(notFoundPage ?? 'Not Found');
-    return;
+    response.writeHead(404, { 'Content-Type': 'text/plain' });
+    response.end('Not Found');
   }
 }
