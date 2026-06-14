@@ -23,12 +23,6 @@ export default async function route(request, response) {
 
   const contentType = contentTypes[extension.slice(1)];
 
-  if (!contentType) {
-    response.writeHead(404, { 'Content-Type': 'text/plain' });
-    response.end('Not Found');
-    return;
-  }
-
   try {
     if (!contentType) {
       throw new Error('Unrecognized content type');
@@ -41,9 +35,11 @@ export default async function route(request, response) {
     let is404Page = extension === '.html';
     let notFoundPage;
 
-    try {
-      notFoundPage = await fs.readFile('404.html', 'utf8');
-    } catch (error) {}
+    if (is404Page) {
+      try {
+        notFoundPage = await fs.readFile('404.html', 'utf8');
+      } catch (error) {}
+    }
 
     response.writeHead(404, {
       'Content-Type': is404Page ? 'text/html' : 'text/plain',
