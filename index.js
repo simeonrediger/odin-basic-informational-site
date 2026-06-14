@@ -16,11 +16,6 @@ const contentTypes = {
 function route(request, response) {
   const url = new URL(request.url, origin);
 
-  if (url.origin !== origin) {
-    console.error('Bad origin:', url.origin);
-    return;
-  }
-
   if (url.pathname === '/') {
     url.pathname += 'index';
   }
