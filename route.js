@@ -28,9 +28,9 @@ export default async function route(request, response) {
       throw new Error('Unrecognized content type');
     }
 
-    const data = await fs.readFile('.' + url.pathname, 'utf8');
+    const content = await fs.readFile('.' + url.pathname, 'utf8');
     response.writeHead(200, { 'Content-Type': contentType });
-    response.end(data);
+    response.end(content);
   } catch (error) {
     if (extension === '.html') {
       try {
