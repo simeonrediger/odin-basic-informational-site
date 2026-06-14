@@ -1,4 +1,5 @@
 import * as http from 'node:http';
+import path from 'node:path';
 import fs from 'node:fs';
 
 const port = 8080;
@@ -28,8 +29,8 @@ function route(request, response) {
   }
 
   const filepath = routes[url.pathname];
-  const extension = filepath.split('.')[1];
-  const contentType = contentTypes[extension];
+  const extension = path.extname(url.pathname) || '.html';
+  const contentType = contentTypes[extension.slice(1)];
 
   if (!filepath || !contentType) {
     console.error('Bad route:', request.url);
