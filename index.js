@@ -33,6 +33,19 @@ function route(request, response) {
     return;
   }
 
+  if (!fs.existsSync('.' + url.pathname)) {
+    response.writeHead(404, { 'Content-Type': 'text/html' });
+
+    try {
+      const notFoundPage = fs.readFileSync('404.html', 'utf8');
+      response.end(notFoundPage);
+    } catch (error) {
+      console.error(error);
+    }
+
+    return;
+  }
+
   response.writeHead(200, { 'Content-Type': contentType });
 
   try {
