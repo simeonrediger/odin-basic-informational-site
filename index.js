@@ -21,6 +21,7 @@ function route(request, response) {
   }
 
   const extension = path.extname(url.pathname) || '.html';
+
   if (!url.pathname.endsWith(extension)) {
     url.pathname += extension;
   }
