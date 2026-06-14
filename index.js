@@ -21,15 +21,15 @@ function route(request, response) {
   }
 
   const extension = path.extname(url.pathname) || '.html';
+  if (!url.pathname.endsWith(extension)) {
+    url.pathname += extension;
+  }
+
   const contentType = contentTypes[extension.slice(1)];
 
   if (!contentType) {
     console.error('Bad route:', request.url);
     return;
-  }
-
-  if (!url.pathname.endsWith(extension)) {
-    url.pathname += extension;
   }
 
   response.writeHead(200, { 'Content-Type': contentType });
