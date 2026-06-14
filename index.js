@@ -1,8 +1,11 @@
 import * as http from 'node:http';
 import fs from 'node:fs';
 
+const port = 8080;
+const origin = `http://localhost:${port}`;
+
 const server = http.createServer(route);
-server.listen(8080);
+server.listen(port);
 
 const routes = {
   '/': 'index.html',
@@ -17,7 +20,14 @@ const contentTypes = {
 };
 
 function route(request, response) {
-  const filepath = routes[request.url];
+  const url = new URL(request.url, origin);
+
+  if (url.origin !== origin) {
+    console.error('Bad origin:', url.origin);
+    return;
+  }
+
+  const filepath = routes[url.pathname];
   const extension = filepath.split('.')[1];
   const contentType = contentTypes[extension];
 
