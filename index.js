@@ -8,13 +8,6 @@ const origin = `http://localhost:${port}`;
 const server = http.createServer(route);
 server.listen(port);
 
-const routes = {
-  '/': 'index.html',
-  '/about': 'about.html',
-  '/contact-me': 'contact-me.html',
-  '/style.css': 'style.css',
-};
-
 const contentTypes = {
   html: 'text/html',
   css: 'text/css',
@@ -28,19 +21,26 @@ function route(request, response) {
     return;
   }
 
-  const filepath = routes[url.pathname];
+  if (url.pathname === '/') {
+    url.pathname += 'index';
+  }
+
   const extension = path.extname(url.pathname) || '.html';
   const contentType = contentTypes[extension.slice(1)];
 
-  if (!filepath || !contentType) {
+  if (!contentType) {
     console.error('Bad route:', request.url);
     return;
+  }
+
+  if (!url.pathname.endsWith(extension)) {
+    url.pathname += extension;
   }
 
   response.writeHead(200, { 'Content-Type': contentType });
 
   try {
-    const data = fs.readFileSync(filepath, 'utf8');
+    const data = fs.readFileSync('.' + url.pathname, 'utf8');
     response.end(data);
   } catch (error) {
     console.error(error);
