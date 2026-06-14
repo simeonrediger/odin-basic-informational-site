@@ -28,13 +28,13 @@ export default async function route(request, response) {
       throw new Error('Unrecognized content type');
     }
 
-    const content = await fs.readFile('.' + url.pathname, 'utf8');
+    const content = await readPublicFile(url.pathname);
     response.writeHead(200, { 'Content-Type': contentType });
     response.end(content);
   } catch (error) {
     if (extension === '.html') {
       try {
-        const notFoundPage = await fs.readFile('404.html', 'utf8');
+        const notFoundPage = await readPublicFile('/404.html');
         response.writeHead(404, { 'Content-Type': 'text/html' });
         response.end(notFoundPage);
         return;
@@ -44,4 +44,8 @@ export default async function route(request, response) {
     response.writeHead(404, { 'Content-Type': 'text/plain' });
     response.end('Not Found');
   }
+}
+
+async function readPublicFile(pathname) {
+  return fs.readFile('./public' + pathname, { encoding: 'utf8' });
 }
