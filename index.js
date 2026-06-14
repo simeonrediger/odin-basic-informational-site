@@ -28,7 +28,8 @@ function route(request, response) {
   const contentType = contentTypes[extension.slice(1)];
 
   if (!contentType) {
-    console.error('Bad route:', request.url);
+    response.writeHead(404, { 'Content-Type': 'text/plain' });
+    response.end('Not Found');
     return;
   }
 
