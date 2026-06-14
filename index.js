@@ -1,6 +1,6 @@
 import * as http from 'node:http';
 import path from 'node:path';
-import fs from 'node:fs';
+import * as fs from 'node:fs/promises';
 
 const port = 8080;
 const origin = `http://localhost:${port}`;
@@ -13,7 +13,7 @@ const contentTypes = {
   css: 'text/css',
 };
 
-function route(request, response) {
+async function route(request, response) {
   const url = new URL(request.url, origin);
 
   if (url.pathname === '/') {
@@ -34,25 +34,27 @@ function route(request, response) {
     return;
   }
 
-  if (!fs.existsSync('.' + url.pathname)) {
-    response.writeHead(404, { 'Content-Type': 'text/html' });
-
-    try {
-      const notFoundPage = fs.readFileSync('404.html', 'utf8');
-      response.end(notFoundPage);
-    } catch (error) {
-      console.error(error);
+  try {
+    if (!contentType) {
+      throw new Error('Unrecognized content type');
     }
 
-    return;
-  }
-
-  response.writeHead(200, { 'Content-Type': contentType });
-
-  try {
-    const data = fs.readFileSync('.' + url.pathname, 'utf8');
+    const data = await fs.readFile('.' + url.pathname, 'utf8');
+    response.writeHead(200, { 'Content-Type': contentType });
     response.end(data);
   } catch (error) {
-    console.error(error);
+    let is404Page = extension === '.html';
+    let notFoundPage;
+
+    try {
+      notFoundPage = await fs.readFile('404.html', 'utf8');
+    } catch (error) {}
+
+    response.writeHead(404, {
+      'Content-Type': is404Page ? 'text/html' : 'text/plain',
+    });
+
+    response.end(notFoundPage ?? 'Not Found');
+    return;
   }
 }
