@@ -1,7 +1,7 @@
 import path from 'node:path';
 import * as fs from 'node:fs/promises';
 
-import { origin } from './index.js';
+import { origin } from './app.js';
 
 const contentTypes = {
   html: 'text/html',
