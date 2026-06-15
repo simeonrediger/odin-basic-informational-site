@@ -9,6 +9,7 @@ A simple Node web server that serves a few pages.
 3. `cd` into the repo directory and run the following:
 
 ```bash
+npm install
 cp .env.example .env
 ```
 
