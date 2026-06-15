@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A simple Node web server that serves a few pages.",
   "main": "app.js",
-  "devDependencies": {},
   "scripts": {
     "start": "node --watch --env-file-if-exists=.env app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/simeonrediger/odin-basic-informational-site/issues"
   },
-  "homepage": "https://github.com/simeonrediger/odin-basic-informational-site#readme"
+  "homepage": "https://github.com/simeonrediger/odin-basic-informational-site#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }

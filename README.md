@@ -17,3 +17,7 @@ cp .env.example .env
 ```bash
 npm start
 ```
+
+## Changelog
+
+- 2026-06-15: Refactor with Express
